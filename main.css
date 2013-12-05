@@ -80,3 +80,15 @@ img.profpic{
 #out{
 	alignment-adjust:middle;
 }
+
+.ui-footer .ui-btn-right {
+}
+.articleContent > table > tbody > tr > td > font > br {
+  display: none;
+}
+.articleContent > table > tbody > tr > td > font > br + div {
+  display: none;
+}
+.articleContent * {
+  font-size: medium !important;
+}
