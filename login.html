@@ -10,7 +10,6 @@
 <script type="text/javascript" charset="utf-8">
 		$(document).bind('pageinit', function(){
 			$('#form-login').submit(function(e){
-				//alert("It triggered!");
 				e.preventDefault();
 				//Jquery.support.cors = true;
 				var postTo = 'http://localhost/Care-Ur-Baby-master/db/login.php';
@@ -21,24 +20,22 @@
 					data: ({username: $("#userName").val(), password: $("#passInput").val()}),
 					//dataType: "jsonp",
 					success: function(data){
-								//alert(JSON.stringify(data));
-								window.location.href = 'home.html';
-							},
-							/*function(data){
-								if(data.status == 'success'){
-									window.location.replace = 'home.html';
-								} else if(data.status == 'error'){
+								console.log(data);
+								if(data != 'error'){
+									window.location.href= 'home.html?id='+data;
+									localStorage.setItem('id', data);
+									console.log(localStorage.getItem("id"));
+								} else if(data == 'error'){
 									alert("Authentication failed. Please try again!");
 									return false;
 								}
-							},*/
-					error: function() {
+							},
+					/*error: function() {
 								alert("Failed to submit");
-						}
+						}*/
 				});
 			});
 		});
-		  
 </script>  
 
 </head> 
@@ -79,25 +76,19 @@
             <h2 align="center">Signing up Now</h2>
         </div>
     	<div data-role="fieldcontain">
-	  		<form method="post" action="">
+	  		<form id="form-signup" method="post" data-ajax="false">
           		<!--<label for="firstName">First Name</label>-->
-          		<input name="firstName" id="firstName" placeholder="First Name" value="" type="text" data-clear-btn="true" data-icon="home">
-          
-          		<!--<label for="lastName">Last Name</label>-->
-          		<input name="lastName" id="lastName" placeholder="Last Name" value="" type="text" data-clear-btn="true">
-                  
+          		<input name="username" id="firstName" placeholder="username" value="" type="text" data-clear-btn="true" data-icon="home">                  
           		<!--<label for="userEmail">Email</label>-->
           		<input name="userEmail" id="userEmail" placeholder="Your Email" value="" type="email" data-clear-btn="true">
           
           		<!--<label for="password">Password:</label>-->
 	      		<input type="password" name="password" id="password" value="" placeholder="Your Password" data-clear-btn="true"/>
-	      		                  
+	      		<input type="submit" data-role="button" rel="external" value="SignUp"/>                 
       		</form>
-        </div> 
-        <a href="home.html" data-role="button" rel="external">Submit</a>       	
+        </div>        	
 	</div>
 	
 </div> <!-- Sign Up-->
-
 </body>
 </html>
