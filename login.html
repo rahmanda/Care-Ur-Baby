@@ -35,6 +35,32 @@
 						}*/
 				});
 			});
+			$('#form-signup').submit(function(e){
+				e.preventDefault();
+				//Jquery.support.cors = true;
+				var postTo = 'http://localhost/Care-Ur-Baby-master/db/signup.php';
+				$.ajax({
+					url: postTo,
+					crossDomain: true,
+					type: 'POST',
+					data: ({username: $("#firstName").val(), email: $("#userEmail").val(), password: $("#password").val()}),
+					//dataType: "jsonp",
+					success: function(data){
+								console.log(data);
+								/*if(data != 'error'){
+									window.location.href= 'home.html?id='+data;
+									localStorage.setItem('id', data);
+									console.log(localStorage.getItem("id"));
+								} else if(data == 'error'){
+									alert("Authentication failed. Please try again!");
+									return false;
+								}*/
+							},
+					/*error: function() {
+								alert("Failed to submit");
+						}*/
+				});
+			});
 		});
 </script>  
 
@@ -75,8 +101,8 @@
         	<h1 align="center">Care your baby?</h1> 
             <h2 align="center">Signing up Now</h2>
         </div>
-    	<div data-role="fieldcontain">
-	  		<form id="form-signup" method="post" data-ajax="false">
+    	<div data-role="fieldcontain" align="center">
+	  		<form id="form-signup" method="post">
           		<!--<label for="firstName">First Name</label>-->
           		<input name="username" id="firstName" placeholder="username" value="" type="text" data-clear-btn="true" data-icon="home">                  
           		<!--<label for="userEmail">Email</label>-->

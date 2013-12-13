@@ -5,8 +5,8 @@ header("access-control-allow-headers: Content-Type, *");
 header("Content-type: application/json; charset=utf-8");
 header("access-control-allow-origin: *");*/
 $host="localhost";
-$user="rahmanda";
-$password="SmmKQKnypzSuFA4C";	
+$user="root";
+$password="MurihPusparum";	
 $koneksi=mysql_connect($host,$user,$password) or die("Connection Failed! Try Again!");
 mysql_select_db("careurbaby");
 /*if(isset($_POST['username']) and isset($_POST['password'])) {

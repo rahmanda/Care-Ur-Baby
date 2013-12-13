@@ -7,11 +7,58 @@
 <link href="main.css" rel="stylesheet" type="text/css" />
 <script src="lib/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="lib/jquery.mobile-1.3.2.min.js" type="text/javascript"></script>
-<script src="main.js" type="text/javascript"></script>
+<script type="text/javascript">
+    document.addEventListener("deviceready", onDeviceReady,true);
+    var onDeviceReady = $(document).ready(function(){
+        $.ajax({
+        url: 'http://localhost/Care-Ur-Baby-master/db/getbabydata.php',
+        dataType: 'jsonp',
+        type: 'POST',
+        data: ({id: function(){
+            var session = localStorage.getItem("id");
+            if(session){
+                return session;
+            }
+        }}),
+        jsonp: 'jsoncallback',
+        timeout: 5000,
+        success: function(data, status){
+            var listview = '';
+            $.each(data, function(i,item){
+                var today = new Date();
+                var age = calculateAge(item.tglLahir, today); 
+                listview+= "<li><a href='babyprofile.html?id="+item.id+"' data-ajax='false'><img src='http://localhost/Care-Ur-Baby-master/img/"+item.poto+"'/>";
+                listview+= "<h2>"+item.nama+"</h2><p>"+age+" Month</p><p>5 kg</p><p class='ui-li-aside'></p></a></li>";
+            });
+            $("#baby_list").append(listview).listview("refresh");
+            console.log(data);
+        },
+            error: function(){
+            alert('Error terjadi');
+            }
+        });
+        function calculateAge (birthDate, otherDate) {
+            birthDate = new Date(birthDate);
+            otherDate = new Date(otherDate);
+
+            var years = (otherDate.getFullYear() - birthDate.getFullYear());
+
+            if (otherDate.getMonth() < birthDate.getMonth() || 
+            otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+                years--;
+            }
+
+            return years;
+        }
+    });
+    $(function() {
+        document.addEventListener("deviceready", onDeviceReady, true);
+    });  
+</script>
 </head> 
 <body> 
 
-<div data-role="page" id="home" name="home">
+<div data-role="page" id="baby" name="home">
     
     <div data-role="panel" id="mypanel" data-position="right" data-display="overlay">
     	 <div class="ui-panel-inner">
@@ -39,20 +86,20 @@
                 <p>add it now!</p>
                 <p class="ui-li-aside"></p>
         	</a></li>
-            <li><a href="#bily">
+            <!--<li><a href="#bily">
                 <img src="img/Bily.jpg">
-                <h2>Bily</h2>
+                <h2>Billy</h2>
                 <p>5 Months</p>
                 <p>40 Kg</p>
-                <!--<p class="ui-li-aside">iOS</p>-->
+                <p class="ui-li-aside">iOS</p>
         	</a></li>
             <li><a href="#tomas">
                 <img src="img/Tomas.jpg">
                 <h2>Tom</h2>
                 <p>2 Year 4 Months</p>
                 <p>40 Kg</p>
-                <!--<p class="ui-li-aside">iOS</p>-->
-        	</a></li>
+                <p class="ui-li-aside">iOS</p>
+        	</a></li>-->
         </ul>
 	</div>
     

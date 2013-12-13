@@ -7,12 +7,61 @@
 <link href="main.css" rel="stylesheet" type="text/css" />
 <script src="lib/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="lib/jquery.mobile-1.3.2.min.js" type="text/javascript"></script>
-<script src="main.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).on('pagebeforeshow', function(){
+        $.ajax({
+        url: 'http://localhost/Care-Ur-Baby-master/db/getuserdata.php',
+        dataType: 'jsonp',
+        data: ({id: function(){
+            //if(getParameterByName("id")){
+                //return getParameterByName("id");
+            //} else {
+                console.log(localStorage.getItem("id"));
+                return localStorage.getItem("id");
+            //}
+        }}),
+        jsonp: 'jsoncallback',
+        timeout: 5000,
+        type: 'POST',
+        success: function(data, status){
+            $("#username").text("Nama :"+data.nama);
+            $("#email").text("Email: "+data.email);
+            $("#address").text("Alamat: "+data.alamat);
+            var today = new Date();
+            var birthday = data.tgllahir;
+            var age = calculateAge(birthday, today);
+            $("#age").text("Umur: "+age);
+            $("#gotoinputprofile").attr("href", "input_profile.html?id="+data.id);
+            console.log(data);
+        },
+            error: function(error){
+            alert('Error terjadi');
+            }
+        });
+        function calculateAge (birthDate, otherDate) {
+            birthDate = new Date(birthDate);
+            otherDate = new Date(otherDate);
+
+            var years = (otherDate.getFullYear() - birthDate.getFullYear());
+
+            if (otherDate.getMonth() < birthDate.getMonth() || 
+            otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+                years--;
+            }
+
+            return years;
+        }
+    function getParameterByName(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }  
+    });
+</script>
 </head> 
 <body> 
 
 <div data-role="page" id="home" > 	
-    
 	<!--<div data-role="header">--> 
 	<!--</div>-->
     <div data-role="panel" id="mypanel" data-position="right" data-display="overlay">
@@ -34,19 +83,17 @@
         	<img src="img/plus-icon.png" class="profpic"/>
         </div>
     	<div id="userData">
-            
-        	<P> Nama User :</P>
-            
-        	<p> Tempat Lahir :</p>
-        	<p> Tanggal Lahir :<p>
-        	<p> <a href="#babyname">Nama Bayi</a> :</p>
+            <p id="username"></p>
+            <p id="email"></p>
+            <p id="address"></p>
+            <p id="age"></p>
     	</div>    
         
         <div id="graph">
         	<p>Reminder to do list</p>
             <p>Popup statistics slide dari kiri atau kanan</p>
         </div>
-        <a data-role="button" href="input_profile.html" rel="external" data-inline="true">update profile</a>
+        <a id="gotoinputprofile" data-role="button" rel="external" data-inline="true">update profile</a>
         
 	</div> <!-- Content -->
     
@@ -61,7 +108,6 @@
     	</div><!-- /navbar -->
 	</div> <!-- Footer -->
 </div> <!-- Home -->
-
 <div data-role="page" id="logout">
 	<div data-role="header">
     	<h1>Log Out</h1>

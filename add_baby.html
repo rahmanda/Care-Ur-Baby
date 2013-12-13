@@ -7,7 +7,6 @@
 <link href="main.css" rel="stylesheet" type="text/css" />
 <script src="lib/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="lib/jquery.mobile-1.3.2.min.js" type="text/javascript"></script>
-<script src="main.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="lib/mobipick/css/mobipick.css" />
 <script type="text/javascript" src="lib/mobipick/external/xdate.js"></script>
 <script type="text/javascript" src="lib/mobipick/external/xdate.i18n.js"></script>
@@ -26,6 +25,42 @@
     var dateObject = $( this ).mobipick( "option", "date" );
     });
     });
+    $(document).ready(function () {
+        $("#form-addbaby").submit(function(e){
+            e.preventDefault();
+                //Jquery.support.cors = true;
+                var postTo = 'http://localhost/Care-Ur-Baby-master/db/addbaby.php';
+                var id = localStorage.getItem("id");
+                $.ajax({
+                    url: postTo,
+                    crossDomain: true,
+                    type: 'POST',
+                    data: ({id: id, nama: $("input[name='nama']").val(), jk: $("input[name='radio-choice-v-2']:checked").val(), tgl_lahir: $("input[name='tgl_lahir']").val(),
+                            tpt_lahir: $("input[name='tpt_lahir']").val(), berat: $("input[name='berat']").val(), tinggi: $("input[name='tinggi']").val()}),
+                    //dataType: "jsonp",
+                    success: function(data){
+                                //alert(JSON.stringify(data));
+                                //window.location.href = 'home.html';
+                                //alert("Your profile data has updated successfully");
+                                //var n = noty({text: 'Your profile data has updated successfully'});
+                                //n.setType('success');
+                                alert("success");
+                                console.log(JSON.stringify(data));
+                            },
+                            /*function(data){
+                                if(data.status == 'success'){
+                                    window.location.replace = 'home.html';
+                                } else if(data.status == 'error'){
+                                    alert("Authentication failed. Please try again!");
+                                    return false;
+                                }
+                            },*/
+                    error: function() {
+                                alert("Failed to submit");
+                        }
+                });            
+        })
+    })
 </script>
 </head> 
 <body> 
@@ -54,27 +89,28 @@
         		<img src="img/plus-icon.png" class="profpic"/>
         	</div>
         </div>
-    	<div id="userData" data-role="fieldcontain">
-        	<label for="nama">Nama:</label>
+    	<!--<div id="userData" data-role="fieldcontain">-->
+        <form id="form-addbaby" method="post">
+        	<label for="nama_user">Nama:</label>
             <input type="text" name="nama" id="nama_user" placeholder="Nama" value="">            
             <fieldset data-role="controlgroup" data-type="horizontal">
     			<legend>Jenis Kelamin:</legend>
-    			<input type="radio" name="radio-choice-v-2" id="radio-choice-v-2a" value="on" checked="checked">
+    			<input type="radio" name="radio-choice-v-2" id="radio-choice-v-2a" value="L" checked="checked">
     			<label for="radio-choice-v-2a">Laki - Laki</label>
-    			<input type="radio" name="radio-choice-v-2" id="radio-choice-v-2b" value="off">
+    			<input type="radio" name="radio-choice-v-2" id="radio-choice-v-2b" value="P">
     			<label for="radio-choice-v-2b">Perempuan</label>
 			</fieldset>
             <label for="tgl_lahir">Tanggal Lahir:</label>
             <input type="text" name="tgl_lahir" id="tgl_lahir" placeholder="Birth Day">
-            <label for="nama">Tempat Lahir:</label>
+            <label for="tpt_lahir">Tempat Lahir:</label>
             <input type="text" name="tpt_lahir" id="tpt_lahir" placeholder="Birth Place" value="">
-            <label for="nama">Berat :</label>
+            <label for="berat">Berat :</label>
             <input type="number" name="berat" id="berat" placeholder="Dalam kg" value="">
-            <label for="nama">Tinggi:</label>
-            <input type="number" name="tinggi" id="tinggi" placeholder="Dalam cm" value="">
-        </div>    
+            <label for="tinggi">Tinggi:</label>
+            <input type="number" name="tinggi" id="tinggi" placeholder="Dalam cm" value="">   
         <!--<button type="submit" id="submit_profile">Submit</button>-->
-        <a data-role="button" href="baby.html" rel="external">Submit</a>
+        <input type="submit" data-role="button" id="submit" value="submit">
+        </form>
         
         
 	</div> <!-- Content -->
